@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LESH Soluções Digitais — Wallpaper Animado</title>
+  <style>
+    :root {
+      --shimmer-cycle: 8s;
+      --logo-url: url("https://raw.githubusercontent.com/emaillucianodantas-bot/LESH/refs/heads/main/LogoLESHnew.png");
+      /* Altere o valor abaixo se quiser ajustar ainda mais o tamanho (ex: 160px, 200px, 240px) */
+      --logo-width: 120px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+    }
+
+    /* Fundo branco no centro com degradê suave até cinza nas extremidades */
+    .wallpaper-stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(
+          ellipse 68% 68% at 50% 50%,
+          #ffffff 0%,
+          #fcfcfd 38%,
+          #eceff3 72%,
+          #d1d6de 100%
+        );
+    }
+
+    /* Vinheta sutil nos cantos para profundidade de estúdio */
+    .wallpaper-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 50% 50%,
+        transparent 58%,
+        rgba(148, 156, 168, 0.22) 100%
+      );
+    }
+
+    /* Contêiner central da logo com tamanho reduzido */
+    .logo-container {
+      position: relative;
+      width: var(--logo-width);
+      max-width: 45vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 12px 24px rgba(18, 28, 45, 0.12));
+      transition: width 0.25s ease;
+    }
+
+    .logo-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    /* Camada do brilho metálico recortada no formato exato da logo */
+    .metallic-sheen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      -webkit-mask-image: var(--logo-url);
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-image: var(--logo-url);
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+    }
+
+    .metallic-sheen::after {
+      content: "";
+      position: absolute;
+      top: -35%;
+      left: -130%;
+      width: 75%;
+      height: 170%;
+      transform: skewX(-24deg);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.18) 28%,
+        rgba(255, 255, 255, 0.92) 50%,
+        rgba(235, 246, 255, 0.22) 72%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      mix-blend-mode: screen;
+      animation: sheenSweep var(--shimmer-cycle) cubic-bezier(0.35, 0, 0.25, 1) infinite;
+    }
+
+    @keyframes sheenSweep {
+      0%, 68% {
+        left: -130%;
+        opacity: 0;
+      }
+      72% {
+        opacity: 1;
+      }
+      92% {
+        left: 165%;
+        opacity: 1;
+      }
+      96%, 100% {
+        left: 165%;
+        opacity: 0;
+      }
+    }
+
+    /* Área de ativação discreta no canto inferior direito */
+    .controls-trigger {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      width: 260px;
+      height: 90px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 16px;
+      z-index: 20;
+    }
+
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .controls-trigger:hover .controls-panel,
+    .controls-panel:focus-within {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ctrl-btn {
+      border: none;
+      background: transparent;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(15, 23, 42, 0.06);
+      color: #0f172a;
+    }
+
+    .ctrl-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .divider {
+      width: 1px;
+      height: 14px;
+      background: rgba(15, 23, 42, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <main class="wallpaper-stage">
+    <div class="logo-container" id="logoContainer">
+      <img
+        id="logoImg"
+        class="logo-image"
+        src="https://raw.githubusercontent.com/emaillucianodantas-bot/LESH/refs/heads/main/LogoLESHnew.png"
+        alt="LESH Soluções Digitais"
+      />
+      <div class="metallic-sheen" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <!-- Controles ocultos (aparecem apenas ao passar o mouse no canto inferior direito) -->
+  <div class="controls-trigger">
+    <div class="controls-panel">
+      <button class="ctrl-btn" data-size="140px" title="Logo pequena">P</button>
+      <button class="ctrl-btn active" data-size="190px" title="Logo média">M</button>
+      <button class="ctrl-btn" data-size="250px" title="Logo grande">G</button>
+      <div class="divider"></div>
+      <button class="ctrl-btn active" data-speed="8s" title="Brilho a cada 8s">8s</button>
+      <button class="ctrl-btn" data-speed="5s" title="Brilho a cada 5s">5s</button>
+      <div class="divider"></div>
+      <button class="ctrl-btn" id="fullscreenBtn" title="Alternar Tela Cheia">Tela Cheia</button>
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+
+    // Ajuste rápido de tamanho (P, M, G)
+    document.querySelectorAll('[data-size]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-size]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        root.style.setProperty('--logo-width', btn.dataset.size);
+      });
+    });
+
+    // Ajuste rápido da frequência do reflexo metálico
+    document.querySelectorAll('[data-speed]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-speed]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        root.style.setProperty('--shimmer-cycle', btn.dataset.speed);
+      });
+    });
+
+    // Botão de Tela Cheia
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
